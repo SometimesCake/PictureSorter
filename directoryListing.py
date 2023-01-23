@@ -16,6 +16,7 @@ import os
 import sys
 import filetype
 import datetime
+import time
 
 import sc_utilities as utils
 
@@ -62,13 +63,22 @@ def buildDirectoryListing(path, md5, sha1, sha256, verbose):
 
     # Load files
     fileList = []
+    fileCount = 0
     for filename in glob.iglob(path + '**/**', recursive=True, include_hidden=True):
         if os.path.isfile(filename):
             fileList.append(filename)
+            fileCount += 1
+            if verbose:
+                print(f' Loading: {fileCount}', end='\r')
+    
+    if verbose:
+        print (" ")
+        print ("Loading Complete")
 
-    fileCount = len(fileList)
+    
     processedCount = 0
     bytesProcessed = 0
+    startTime = time.time()
 
     for filename in fileList:
         # File path and name
@@ -104,10 +114,15 @@ def buildDirectoryListing(path, md5, sha1, sha256, verbose):
 
         # End of line
         directoryListing += "\n"
+        
+        # End Loop Time
+        loopEndTime = time.time()
 
         if verbose:
             processedCount += 1
-            utils.print_percent_complete(processedCount, fileCount, 45, str(processedCount) + "/" + str(fileCount) + " " + utils.bytesToStr(bytesProcessed))
+            totalTime = time.strftime("%H:%M:%S", time.gmtime(loopEndTime - startTime))
+            calculatedETA = time.strftime("%H:%M:%S", time.gmtime((((loopEndTime-startTime) * fileCount)/processedCount)- (loopEndTime-startTime)))
+            utils.print_percent_complete(processedCount, fileCount, 40, str(processedCount) + "/" + str(fileCount) + " " + utils.bytesToStr(bytesProcessed) + " Processing Time: " + totalTime + " ETA: " + calculatedETA)
 
     return directoryListing
 
