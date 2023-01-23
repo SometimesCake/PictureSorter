@@ -17,6 +17,7 @@ import sys
 import filetype
 import datetime
 import time
+import time
 
 import sc_utilities as utils
 
@@ -63,7 +64,6 @@ def buildDirectoryListing(path, md5, sha1, sha256, verbose):
 
     # Load files
     fileList = []
-    fileCount = 0
     for filename in glob.iglob(path + '**/**', recursive=True, include_hidden=True):
         if os.path.isfile(filename):
             fileList.append(filename)

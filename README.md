@@ -14,5 +14,6 @@ directoryListing.py: error: the following arguments are required: -d
     --md5   set flag to calculate md5 of listed files
     --sha1  set flag to calculate sha1 of listed files
     --sha256    set flag to calculate sha256 of listed files
+    -v Verbose mode
 
 This is a work in progress, and my first project using GitHub. 
